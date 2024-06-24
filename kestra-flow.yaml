@@ -1,0 +1,18 @@
+id: git-ansible
+namespace: dev
+
+tasks:
+  - id: wdir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: cloneRepository
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/iac-ansible/helloworld.git
+        branch: main
+
+      - id: ansible_task
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        docker:
+          image: cytopia/ansible:latest-tools
+        commands:
+          - ansible-playbook -i inventory.ini playbook.yaml
