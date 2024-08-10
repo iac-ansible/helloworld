@@ -1,8 +1,16 @@
 ---
 - name: say hello
-  hosts: localhost
-  connection: local
+  hosts: all
   tasks:
   - name: Print Hello World
     debug:
       msg: "Hello, World!"
+
+  - name: Check OS release
+    command: cat /etc/lsb-release
+    register: os_result
+  - debug: var=os_result.stdout_lines
+  - name: Creating an empty file
+    file:
+      path: "/tmp/xplor.txt"
+      state: touch
